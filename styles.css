@@ -1,0 +1,63 @@
+@font-face {
+    font-family: ZillaSlab;
+    src: url(./fonts/ZillaSlab-Regular.ttf);
+}
+
+body {
+    background-color: #EBF2FA;
+    margin: 0;
+    padding: 0;
+}
+
+* {
+    font-family: ZillaSlab;
+    padding: 0;
+    margin: 0;
+}
+
+
+header {
+    background-color: #679436;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 20px;
+    padding: 25px 0 15px 20px;
+}
+
+h1 {
+    font-size: 40px;
+    align-self: end;
+}
+
+
+img {
+    height: 80px;
+}
+
+.library {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-rows: 300px;
+    padding: 20px;
+    gap: 15px
+}
+
+.library > div {
+    background-color: #A5BE00;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px #636363;
+    border-left: #7A4419 solid 15px;
+    font-size: 25px;
+    padding: 15px;
+    display: grid;
+    align-items: center;
+}
+
+button {
+    align-self: stretch;
+    font-size: inherit;
+    border: none;
+    border-radius: 10px;
+    background-color: #3C6E71;
+    color: #679436;
+}
