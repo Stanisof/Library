@@ -8,9 +8,11 @@ function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = this.read ? "Read" : "Not Read"
-
+    this.readStatus = function() {
+    return this.read = read ? "Read" : "Not Read" }
+    this.readStatus()
     addBookToLibrary(this);
+
   }
 
 
@@ -66,12 +68,11 @@ newBook.addEventListener('click', () => {
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  dialog.close();
-  const fd = new FormData(form);
-
-  const obj = Object.fromEntries(fd);
   
-  addBookToLibrary(obj);
+  const fd = new FormData(form);
+  const obj = new Book(fd.get('title'),fd.get('author'),fd.get('pages'),fd.get('read'));
+  
+  dialog.close();
   form.reset();
   displayLast();
 })
