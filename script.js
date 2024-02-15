@@ -1,22 +1,18 @@
 const myLibrary = [];
 const library = document.querySelector('.library');
+const newBook = document.getElementById('new');
+const dialog  = document.querySelector('dialog');
+const form = document.querySelector('form');
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read;
-    /* this.presentBook = function() {
-      let readStatus = '';
-      if (read) {
-        readStatus = "already read"
-      } else {
-        readStatus = "not read yet"
-      }
-      return `${this.title} from ${this.author} has ${this.pages}, ${readStatus}.`
-    } */
+    this.read = this.read ? "Read" : "Not Read"
+
+    addBookToLibrary(this);
   }
-  
+
 
 function addBookToLibrary(object) {
    myLibrary.push(object)
@@ -25,16 +21,15 @@ function addBookToLibrary(object) {
 function createCard() {
     let div = document.createElement('div');
     let button = document.createElement('button');
+
     library.appendChild(div);
-    for (let i = 0; i < 4; i++) { 
-    let para  = document.createElement('p');
-    div.appendChild(para)
+
+    for (let i = 0; i < 3; i++) { 
+      let para  = document.createElement('p');
+      div.appendChild(para)
     }
+
     div.appendChild(button);
-    button.textContent = "X"
-
-    
-
 }
 
 let pompeji = new Book("Pompeji", "Robert Harris", 279, false);
@@ -45,8 +40,40 @@ function displayBooks(array) {
   array = myLibrary;
 
   for (let i of array) {
-    console.log(i.title)
+    createCard();
+    let card = document.querySelectorAll('.library div:last-child p');
+    let button = document.querySelector('.library div:last-child button');
+    card[0].textContent = i.title;
+    card[1].textContent = i.author;
+    card[2].textContent = i.pages;
+    button.textContent = i.read;
   }
-
-
 }
+
+function displayLast() {
+  createCard();
+  let card = document.querySelectorAll('.library div:last-child p');
+  let button = document.querySelector('.library div:last-child button');
+    card[0].textContent = myLibrary[myLibrary.length-1].title;
+    card[1].textContent = myLibrary[myLibrary.length-1].author;
+    card[2].textContent = myLibrary[myLibrary.length-1].pages;
+    button.textContent = myLibrary[myLibrary.length-1].read;
+}
+
+newBook.addEventListener('click', () => {
+  dialog.showModal();
+  })
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  dialog.close();
+  const fd = new FormData(form);
+
+  const obj = Object.fromEntries(fd);
+  
+  addBookToLibrary(obj);
+  form.reset();
+  displayLast();
+})
+
+displayBooks();
