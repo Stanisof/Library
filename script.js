@@ -28,7 +28,7 @@ function createCard() {
     let div = document.createElement('div');
     let button = document.createElement('button');
     let deleteButton = document.createElement('button');
-    deleteButton.setAttribute('id', 'delete');
+    deleteButton.setAttribute('class', 'delete');
 
     library.appendChild(div);
     div.appendChild(deleteButton);
@@ -55,41 +55,84 @@ function displayBooks(array) {
     let button = document.querySelector('.library div:last-child button:last-child');
     let deleteButton = document.querySelector('.library div:last-child button:first-child');
     let div = document.querySelector('.library div:last-child');
+    
+    
     div.setAttribute('data-index', i.dataIndex);
+    // ^ was damit? eig unnötig
+
+
     card[0].textContent = i.title;
     card[1].textContent = i.author;
     card[2].textContent = i.pages;
     button.textContent = i.read;
     deleteButton.textContent = 'x';
+    if(i.read == 'Not Read') {
+      button.setAttribute('class', 'notread')
+    }
+
+    deleteCard(i,deleteButton,div);
+    toggleRead(button, i)
+
   }
 }
 
-function displayLast() {
+function displayLast(newBook) {
   createCard();
   let card = document.querySelectorAll('.library div:last-child p');
   let button = document.querySelector('.library div:last-child button:last-child');
   let deleteButton = document.querySelector('.library div:last-child button:first-child');
-  
-  let libraryIndex = myLibrary.length-1;
   let div = document.querySelector('.library div:last-child');
-  div.setAttribute('data-index', myLibrary[libraryIndex].dataIndex)
+  
+  div.setAttribute('data-index', newBook.dataIndex)
 
     
-    card[0].textContent = myLibrary[libraryIndex].title;
-    card[1].textContent = myLibrary[libraryIndex].author;
-    card[2].textContent = myLibrary[libraryIndex].pages;
-    button.textContent = myLibrary[libraryIndex].read;
+    card[0].textContent = newBook.title;
+    card[1].textContent = newBook.author;
+    card[2].textContent = newBook.pages;
+    button.textContent = newBook.read;
     deleteButton.textContent = 'x';
+    if(newBook.read == 'Not Read') {
+      button.setAttribute('class', 'notread')
+    }
+
+    deleteCard(newBook,deleteButton,div);
+    toggleRead(button, newBook);
 }
 
 function saveIndex(object) {
   let dataIndex = myLibrary.length - 1;
   object.dataIndex = dataIndex;
-  return dataIndex
 }
 
-function deleteCard() {
-  
+function deleteCard(object,deleteButton,div) {
+
+  deleteButton.addEventListener('click', () => {
+    myLibrary.splice(object.dataIndex,1);
+
+    myLibrary.forEach((item)=> {
+      if(item.dataIndex > object.dataIndex) 
+      item.dataIndex -= 1;
+    })
+    console.log(myLibrary);
+    div.remove();
+
+  })
+}
+
+function toggleRead(button, object) {
+
+  button.addEventListener('click', () => {
+    if(object.read == 'Read') {
+    object.read = 'Not Read';
+    button.textContent = 'Not Read';
+    button.setAttribute('class','notread')
+    } else if (object.read == "Not Read") {
+      object.read = 'Read';
+      button.textContent = 'Read';
+      button.classList.remove('notread');
+    }
+
+  })
 }
 
 newBook.addEventListener('click', () => {
@@ -100,11 +143,11 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const fd = new FormData(form);
-  new Book(fd.get('title'),fd.get('author'),fd.get('pages'),fd.get('read'));
+  let newBook = new Book(fd.get('title'),fd.get('author'),fd.get('pages'),fd.get('read'));
   
   dialog.close();
   form.reset();
-  displayLast();
+  displayLast(newBook);
 })
 
 displayBooks();
