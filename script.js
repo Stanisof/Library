@@ -99,6 +99,7 @@ function displayLast(newBook) {
     toggleRead(button, newBook);
 }
 
+
 function saveIndex(object) {
   let dataIndex = myLibrary.length - 1;
   object.dataIndex = dataIndex;
