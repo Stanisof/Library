@@ -4,18 +4,18 @@ const newBook = document.getElementById('new');
 const dialog  = document.querySelector('dialog');
 const form = document.querySelector('form');
 
-function Book(title, author, pages, read) {
+class Book {
+  constructor(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-
-    this.readStatus = function() {
-    return this.read = read ? "Read" : "Not Read" }
-    
-    this.readStatus()
-
+    this.read = this.readStatus(read)
     addBookToLibrary(this);
     saveIndex(this);
+    }
+
+    readStatus(read) {
+    return this.read = read ? "Read" : "Not Read" }    
   }
 
 
@@ -43,7 +43,7 @@ function createCard() {
 
 
 let pompeji = new Book("Pompeji", "Robert Harris", 279, false);
-let book = new Book("Booktitle", "Max Mustermann", 385, false)
+let book = new Book("Booktitle", "Max Mustermann", 385, false);
 
 
 function displayBooks(array) {
